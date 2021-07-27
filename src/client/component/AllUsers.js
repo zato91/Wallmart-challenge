@@ -29,6 +29,29 @@ export default function AllUsers() {
     const [users, setUsers] =useState();
     const classes = useStyles();
 
+  async function getHobbie(){
+    const res = await axios.get('http://localhost:3000/hobbies')
+    const userInfo = await res.data
+    setHobbies(hobbies => userInfo)
+
+}
+
+  useEffect(() => {
+      getHobbie();
+     
+    },[]);
+  
+
+  const handleChange = async (e) => {
+    setIsLoading(false)
+    setHobby(e.target.value);
+    const res = await axios.get(`http://localhost:3000/users/age/${e.target.value}`) 
+    const userInfo = await res.data
+    setUsers(userInfo)
+    setIsLoading(true)
+  };
+
+
     useEffect(() => {
         fetch('http://localhost:3000/users')
             .then(response => response.json())
