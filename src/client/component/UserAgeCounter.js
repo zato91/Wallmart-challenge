@@ -59,6 +59,25 @@ export default function UserAgeCounter() {
     };
 
 
+    function Tab() {
+        const [users, setUsers] =useState();
+        const [isLooading, setIsLoading] = React.useState(true);
+        const classes = useStyles();
+    
+        async function getData(){
+          const res = await axios.get('http://localhost:3000/users')
+          const userInfo = await res.data
+          console.log(userInfo)
+          setUsers(users => userInfo)
+      
+    }
+    
+        useEffect(() => {
+            getData();
+          },[]);
+        
+    
+
     const classes = useStyles();
     return (
         <>
