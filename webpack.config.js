@@ -1,33 +1,41 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = {
     mode: 'development',
-    entry: { index: path.resolve(__dirname, 'src','client','index.js') },
-    // entry: './src/client/index.js',
-    output: {
-        path: path.resolve(__dirname, 'src','client','public'),
-    },
+    entry: ['@babel/polyfill', './src/index.js'],
+    devtool: "inline-source-map",
+    devServer: {
+    historyApiFallback: true,
+  }, 
+
     module: {
         rules: [
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+          
+          {
+            test: /\.js$|jsx/,
+            exclude: /node_modules/,
+            use: ["babel-loader"]
+          },
+          {
+            test: /\.(s*)css$/,
+            use: ["style-loader", "css-loader", "sass-loader"]
+          },
+          {
+            test: /\.(jpg|png)$/,
+            use: {
+              loader: 'url-loader',
             },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: ['babel-loader'],
-            },
-        ],
+          },
+
+        ]
+      
+       
     },
-    devServer: {
-        historyApiFallback: true,
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './public/index.html',
-            favicon: './public/favicon.png',
-        }),
-    ],
-};
+      
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "public", "index.html")
+    }),
+  ]
+}
